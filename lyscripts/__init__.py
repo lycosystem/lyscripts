@@ -26,7 +26,7 @@ __version__ = version
 __description__ = "Package to interact with lymphatic progression data and models."
 __author__ = "Roman Ludwig"
 __email__ = "roman.ludwig@usz.ch"
-__uri__ = "https://github.com/rmnldwg/lyscripts"
+__uri__ = "https://github.com/lycosystem/lyscripts"
 
 # activate copy on write in pandas.
 # See https://pandas.pydata.org/docs/user_guide/copy_on_write.html

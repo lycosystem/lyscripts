@@ -1,16 +1,16 @@
-<img src="https://raw.githubusercontent.com/rmnldwg/lyscripts/main/github-social-card.png" alt="social card" style="width:830px;"/>
+<img src="https://raw.githubusercontent.com/lycosystem/lyscripts/main/github-social-card.png" alt="social card" style="width:830px;"/>
 
-[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/rmnldwg/lyscripts/blob/main/LICENSE)
-[![GitHub repo](https://img.shields.io/badge/rmnldwg%2Flymph-grey.svg?style=flat&logo=github)](https://github.com/rmnldwg/lyscripts)
-[![build badge](https://github.com/rmnldwg/lyscripts/actions/workflows/release.yml/badge.svg?style=flat)](https://pypi.org/project/lyscripts/)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/lycosystem/lyscripts/blob/main/LICENSE)
+[![GitHub repo](https://img.shields.io/badge/lycosystem%2Flymph-grey.svg?style=flat&logo=github)](https://github.com/lycosystem/lyscripts)
+[![build badge](https://github.com/lycosystem/lyscripts/actions/workflows/release.yml/badge.svg?style=flat)](https://pypi.org/project/lyscripts/)
 [![docs badge](https://readthedocs.org/projects/lyscripts/badge/?version=latest)](https://lyscripts.readthedocs.io/en/latest/?badge=latest)
-[![tests badge](https://github.com/rmnldwg/lyscripts/actions/workflows/tests.yml/badge.svg?style=flat)](https://lyscripts.readthedocs.io/en/latest/?badge=latest)
+[![tests badge](https://github.com/lycosystem/lyscripts/actions/workflows/tests.yml/badge.svg?style=flat)](https://lyscripts.readthedocs.io/en/latest/?badge=latest)
 
 ## What are these `lyscripts`?
 
-This package provides convenient scripts for performing inference and learning regarding the lymphatic spread of head & neck cancer. Essentially, it provides a *command line interface* (CLI) to the [lymph](https://github.com/rmnldwg/lymph) library and the [lydata](https://github.com/rmnldwg/lydata) repository that stores lymphatic progression data.
+This package provides convenient scripts for performing inference and learning regarding the lymphatic spread of head & neck cancer. Essentially, it provides a *command line interface* (CLI) to the [lymph](https://github.com/lycosystem/lymph) library and the [lydata](https://github.com/rmnldwg/lydata) repository that stores lymphatic progression data.
 
-We are making these "convenience" scripts public, because doing so is one necessary requirement to making our research easily and fully reproducible. There exists another repository, [lynference](https://github.com/rmnldwg/lynference), where we stored the pipelines that produced our published results in a persistent way.
+We are making these "convenience" scripts public, because doing so is one necessary requirement to making our research easily and fully reproducible. There exists another repository, [lynference](https://github.com/lycosystem/lynference), where we stored the pipelines that produced our published results in a persistent way.
 
 ## Installation
 
@@ -23,7 +23,7 @@ pip install lyscripts
 or installed from source by cloning this repo
 
 ```bash
-git clone https://github.com/rmnldwg/lyscripts.git
+git clone https://github.com/lycosystem/lyscripts.git
 cd lyscripts
 pip install .
 ```
@@ -59,7 +59,7 @@ For these YAML files we provide a unified schema containing all possible fields 
 ```json
 {
     "yaml.schemas": {
-        "https://raw.githubusercontent.com/rmnldwg/lyscripts/main/schemas/ly.json": "*.ly.yaml"
+        "https://raw.githubusercontent.com/lycosystem/lyscripts/main/schemas/ly.json": "*.ly.yaml"
     }
 }
 ```

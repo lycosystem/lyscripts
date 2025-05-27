@@ -56,7 +56,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-source = "https://github.com/rmnldwg/lyscripts"
+source = "https://github.com/lycosystem/lyscripts"
 documentation = "https://lyscripts.readthedocs.io"
 
 [project.optional-dependencies]
