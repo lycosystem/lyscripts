@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0rc1] - 2025-05-27
+
+### Bug Fixes
+
+- Use 'fork' start method under MacOS.
+- Specify config file encoding for other OSes.
+- Cast scenario pattern to bool if possible. Fixes [#70].\
+  Since we allow defining a pattern with keywords like `"involved"` or `1`
+  instead of only `True`, we also need to make sure that is correctly cast
+  to its boolean value for lydata's `C` objects.
+
+### Documentation
+
+- Add warning for Windows & MacOS regarding multiprocess(ing).
+
+### Miscellaneous Tasks
+
+- Add link to changelog.
+
+### Testing
+
+- Ensure observed prevalence is correct. Related [#70].
+
+### Build
+
+- Exclude buggy pydantic-settings. <https://github.com/pydantic/pydantic-settings/issues/605> is present in
+version 2.9.0 and 2.9.1 of pydantic-settings. So, these versions must be
+excluded.
+
+### Ci
+
+- Update release scripts to use [OIDC](https://docs.pypi.org/trusted-publishers/). This is more secure.
+
+### Remove
+
+- Unnecessary custom help formatter.
+
 ## [1.0.0.a7] - 2025-04-15
 
 ### Bug Fixes
@@ -782,6 +819,7 @@ returns `None` instead. Fixes [#11]
 ## [0.5.3] - 2022-08-22
 
 <!-- markdownlint-disable-file MD024 -->
+[1.0.0rc1]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a7...1.0.0rc1
 [1.0.0.a7]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a6...1.0.0.a7
 [1.0.0.a6]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a5...1.0.0.a6
 [1.0.0.a5]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a4...1.0.0.a5
@@ -837,6 +875,7 @@ returns `None` instead. Fixes [#11]
 [#53]: https://github.com/rmnldwg/lyscripts/issues/53
 [#54]: https://github.com/rmnldwg/lyscripts/issues/54
 [#57]: https://github.com/rmnldwg/lyscripts/issues/57
+[#70]: https://github.com/rmnldwg/lyscripts/issues/70
 
 [`emcee`]: https://emcee.readthedocs.io/en/stable/
 [`rich`]: https://rich.readthedocs.io/en/latest/
