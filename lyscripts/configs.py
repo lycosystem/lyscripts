@@ -99,15 +99,20 @@ class DataConfig(BaseModel):
         }
 
 
+def check_pattern(value: PatternType) -> Any:
+    """Check if the value can be converted to a boolean value."""
+    return {lnl: map_to_optional_bool(v) for lnl, v in value.items()}
+
+
 class DiagnosisConfig(BaseModel):
     """Defines an ipsi- and contralateral diagnosis pattern."""
 
-    ipsi: dict[str, PatternType] = Field(
+    ipsi: dict[str, Annotated[PatternType, AfterValidator(check_pattern)]] = Field(
         default={},
         description="Observed diagnoses by different modalities on the ipsi neck.",
         examples=[{"CT": {"II": True, "III": False}}],
     )
-    contra: dict[str, PatternType] = Field(
+    contra: dict[str, Annotated[PatternType, AfterValidator(check_pattern)]] = Field(
         default={},
         description="Observed diagnoses by different modalities on the contra neck.",
     )
@@ -138,12 +143,12 @@ class DistributionConfig(BaseModel):
 class InvolvementConfig(BaseModel):
     """Config that defines an ipsi- and contralateral involvement pattern."""
 
-    ipsi: PatternType = Field(
+    ipsi: Annotated[PatternType, AfterValidator(check_pattern)] = Field(
         default={},
         description="Involvement pattern for the ipsilateral side of the neck.",
         examples=[{"II": True, "III": False}],
     )
-    contra: PatternType = Field(
+    contra: Annotated[PatternType, AfterValidator(check_pattern)] = Field(
         default={},
         description="Involvement pattern for the contralateral side of the neck.",
     )
@@ -451,6 +456,17 @@ class SamplingConfig(BaseModel):
         )
 
 
+def map_to_optional_bool(value: Any) -> Any:
+    """Try to convert the options in the `PatternType` to a boolean value."""
+    if value in [True, "involved", 1]:
+        return True
+
+    if value in [False, "healthy", 0]:
+        return False
+
+    return value
+
+
 class ScenarioConfig(BaseModel):
     """Define a scenario for which e.g. prevalences and risks may be computed."""
 
@@ -716,6 +732,7 @@ class BaseCLI(BaseSettings):
         dynamic_yaml_config_source = DynamicYamlConfigSettingsSource(
             settings_cls=settings_cls,
             yaml_file_path_field="configs",
+            yaml_file_encoding="utf-8",
         )
         logger.debug(f"Created {dynamic_yaml_config_source = }")
         return (

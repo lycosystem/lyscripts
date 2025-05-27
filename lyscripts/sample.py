@@ -8,15 +8,18 @@ built-in convergence detection, as well as bookkeeping for monitoring and resumi
 interrupted sampling runs. It can be used both during the burn-in phase and the actual
 sampling phase.
 
-For parallelization, the sampling tries to use the ``multiprocess(ing)`` module.
-However, we have found that this is often not necessary when the model itself
-distributes the computation of its likelihood to multiple cores (as numpy typically
-does).
+.. warning::
+
+    We strongly recommend to set the CLI's ``--cores`` argument to ``None`` (or ``null``
+    in the YAML config file) if you are on MacOS or Windows. This is because we haven't
+    yet figured out how we can safely and efficiently use the ``multiprocess(ing)``
+    library on these two platforms.
 """
 
 from __future__ import annotations
 
 import os
+import sys
 from typing import Any
 
 from loguru import logger
@@ -24,9 +27,13 @@ from loguru import logger
 from lyscripts.cli import assemble_main
 
 try:
-    from multiprocess import Pool
+    import multiprocess as mp
 except ModuleNotFoundError:
-    from multiprocessing import Pool
+    import multiprocessing as mp
+
+if sys.platform == "darwin":
+    logger.warning("Detected MacOS. Setting multiprocess(ing) start method to 'fork'.")
+    mp.set_start_method("fork")
 
 from pathlib import Path
 
@@ -312,7 +319,7 @@ def get_pool(num_cores: int | None) -> Any | DummyPool:  # type: ignore
     Returns a ``multiprocess(ing)`` pool with ``num_cores`` cores if ``num_cores`` is
     not ``None``. Otherwise, a ``DummyPool`` is returned.
     """
-    return Pool(num_cores) if num_cores is not None else DummyPool()
+    return mp.Pool(num_cores) if num_cores is not None else DummyPool()
 
 
 def init_sampler(settings: SampleCLI, ndim: int, pool: Any) -> emcee.EnsembleSampler:
