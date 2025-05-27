@@ -22,7 +22,7 @@ jobs:
           python-version: '3.10'
       - name: Install build tools
         run: |
-          python3 -m pip install build --user
+          python3 -m pip install build setuptools_scm --user
       - name: Build package
         run: |
           python3 -m build
