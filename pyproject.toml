@@ -72,6 +72,10 @@ test = [
     "pytest",
     "pytest-mpl",
 ]
+dev = [
+    "pre-commit",
+    "git-cliff",
+]
 
 [project.scripts]
 lyscripts = "lyscripts:main"
@@ -90,12 +94,12 @@ version = {attr = "lyscripts._version.version"}
 testpaths = "."
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "B", "C", "R", "U", "D", "I", "S", "T", "A", "N"]
+select = ["E", "F", "W", "B", "C", "R", "U", "D", "I", "S", "T", "A", "N", "COM", "FURB", "NPY", "UP"]
 ignore = ["D409"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402"]
-"**/{tests,docs}/*" = [
+"{tests,docs}/*" = [
     "D103",
     "E402",
     "S101",
