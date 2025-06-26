@@ -54,7 +54,7 @@ def compute_priors(
             sum(
                 model.state_dist(t_stage=t, mode=mode) * p
                 for t, p in zip(t_stages, t_stages_dist, strict=False)
-            )
+            ),
         )
 
     return np.stack(priors)

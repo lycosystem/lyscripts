@@ -81,14 +81,11 @@ dev = [
 lyscripts = "lyscripts:main"
 
 [tool.setuptools.packages.find]
-include = ["lyscripts"]
+where = ["src"]
 
 [tool.setuptools_scm]
-write_to = "lyscripts/_version.py"
+write_to = "src/lyscripts/_version.py"
 local_scheme = "no-local-version"
-
-[tool.setuptools.dynamic]
-version = {attr = "lyscripts._version.version"}
 
 [tool.pytest.ini_options]
 testpaths = "."

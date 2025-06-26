@@ -42,7 +42,7 @@ class GenerateCLI(BaseCLI):
         description=(
             "Specify what fraction of generated patients should come from the "
             "respective T-Stage."
-        )
+        ),
     )
     modalities: dict[str, ModalityConfig]
     params: dict[str, float]

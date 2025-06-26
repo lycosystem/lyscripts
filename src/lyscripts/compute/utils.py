@@ -116,7 +116,7 @@ class HDF5FileStorage(BaseModel):
     """HDF5 file storage for in- and outputs of computations."""
 
     file: HasParentPath = Field(
-        description="Path to the HDF5 file. Parent directories are created if needed."
+        description="Path to the HDF5 file. Parent directories are created if needed.",
     )
     dataset: str | None = Field(
         default=None,

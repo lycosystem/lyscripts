@@ -18,6 +18,8 @@ from scipy.integrate import trapezoid
 
 from lyscripts.utils import load_patient_data, load_yaml_params
 
+RNG = np.random.default_rng()
+
 
 def _add_parser(
     subparsers: argparse._SubParsersAction,
@@ -39,7 +41,9 @@ def _add_arguments(parser: argparse.ArgumentParser):
     This is called by the parent module that is called via the command line.
     """
     parser.add_argument(
-        "data", type=Path, help="Path to the tables of patient data (CSV)."
+        "data",
+        type=Path,
+        help="Path to the tables of patient data (CSV).",
     )
     parser.add_argument("model", type=Path, help="Path to model output files (HDF5).")
 
@@ -51,10 +55,16 @@ def _add_arguments(parser: argparse.ArgumentParser):
         help="Path to parameter file",
     )
     parser.add_argument(
-        "--plots", default="./plots", type=Path, help="Directory for storing plots"
+        "--plots",
+        default="./plots",
+        type=Path,
+        help="Directory for storing plots",
     )
     parser.add_argument(
-        "--metrics", default="./metrics.json", type=Path, help="Path to metrics file"
+        "--metrics",
+        default="./metrics.json",
+        type=Path,
+        help="Path to metrics file",
     )
 
     parser.set_defaults(run_main=main)
@@ -93,7 +103,7 @@ def compute_evidence(
     """
     integrals = np.zeros(shape=num)
     for i in range(num):
-        rand_idx = np.random.choice(log_probs.shape[1], size=log_probs.shape[0])
+        rand_idx = RNG.choice(log_probs.shape[1], size=log_probs.shape[0])
         drawn_accuracy = log_probs[np.arange(log_probs.shape[0]), rand_idx].copy()
         integrals[i] = trapezoid(y=drawn_accuracy, x=temp_schedule)
     return np.mean(integrals), np.std(integrals)
@@ -113,7 +123,7 @@ def compute_ti_results(
     if num_temps != len(h5_file["ti"]):
         raise RuntimeError(
             f"Parameters suggest temp schedule of length {num_temps}, "
-            f"but stored are {len(h5_file['ti'])}"
+            f"but stored are {len(h5_file['ti'])}",
         )
 
     nwalker = ndim * params["sampling"]["walkers_per_dim"]
@@ -152,7 +162,7 @@ def main(args: argparse.Namespace):
         )
         logger.info(
             "Computed results of thermodynamic integration with "
-            f"{len(temp_schedule)} steps"
+            f"{len(temp_schedule)} steps",
         )
 
         # store inverse temperatures and log-probs in CSV file
@@ -164,7 +174,7 @@ def main(args: argparse.Namespace):
                     temp_schedule,
                     np.mean(ti_log_probs, axis=1),
                     np.std(ti_log_probs, axis=1),
-                ]
+                ],
             ).T,
             columns=["β", "accuracy", "std"],
         )
