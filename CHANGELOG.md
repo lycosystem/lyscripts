@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0rc2] - 2025-06-26
+
+### Bug Fixes
+
+- Divide by midext prevalence. Fixes [#72].\
+  This fixes a bug we reintroduced where we didn't compute observed and
+  model prevalence in an analogous and comparable way.
+
+### Documentation
+
+- Fix build badge in README.
+- Fix outdated links to rmnldwg.
+
+### Miscellaneous Tasks
+
+- Update pre-commit & ruff rules.
+
+### Testing
+
+- Fix the dataset used for testing prevalences.
+
+### Build
+
+- Switch to `src` layout. Fixes [#74].
+
+### Ci
+
+- Use tests action with coverage.
+
 ## [1.0.0rc1] - 2025-05-27
 
 ### Bug Fixes
@@ -819,6 +848,7 @@ returns `None` instead. Fixes [#11]
 ## [0.5.3] - 2022-08-22
 
 <!-- markdownlint-disable-file MD024 -->
+[1.0.0rc2]: https://github.com/lycosystem/lyscripts/compare/1.0.0rc1...1.0.0rc2
 [1.0.0rc1]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a7...1.0.0rc1
 [1.0.0.a7]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a6...1.0.0.a7
 [1.0.0.a6]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a5...1.0.0.a6
@@ -876,6 +906,8 @@ returns `None` instead. Fixes [#11]
 [#54]: https://github.com/lycosystem/lyscripts/issues/54
 [#57]: https://github.com/lycosystem/lyscripts/issues/57
 [#70]: https://github.com/lycosystem/lyscripts/issues/70
+[#72]: https://github.com/lycosystem/lyscripts/issues/72
+[#74]: https://github.com/lycosystem/lyscripts/issues/74
 
 [`emcee`]: https://emcee.readthedocs.io/en/stable/
 [`rich`]: https://rich.readthedocs.io/en/latest/
