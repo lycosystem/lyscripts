@@ -68,7 +68,7 @@ docs = [
     "myst_parser",
     "autodoc_pydantic",
 ]
-test = [
+tests = [
     "pytest",
     "pytest-cov",
     "pytest-mpl",
