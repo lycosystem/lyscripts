@@ -5,6 +5,7 @@
 [![build badge](https://github.com/lycosystem/lyscripts/actions/workflows/release.yml/badge.svg?style=flat)](https://pypi.org/project/lyscripts/)
 [![docs badge](https://readthedocs.org/projects/lyscripts/badge/?version=latest)](https://lyscripts.readthedocs.io/en/latest/?badge=latest)
 [![tests badge](https://github.com/lycosystem/lyscripts/actions/workflows/tests.yml/badge.svg?style=flat)](https://lyscripts.readthedocs.io/en/latest/?badge=latest)
+[![Coverage badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/lycosystem/lyscripts/python-coverage-comment-action-data/endpoint.json)](https://htmlpreview.github.io/?https://github.com/lycosystem/lyscripts/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
 ## What are these `lyscripts`?
 
