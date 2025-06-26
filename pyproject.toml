@@ -56,7 +56,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-source = "https://github.com/rmnldwg/lyscripts"
+source = "https://github.com/lycosystem/lyscripts"
 documentation = "https://lyscripts.readthedocs.io"
 
 [project.optional-dependencies]
@@ -68,34 +68,36 @@ docs = [
     "myst_parser",
     "autodoc_pydantic",
 ]
-test = [
+tests = [
     "pytest",
+    "pytest-cov",
     "pytest-mpl",
+]
+dev = [
+    "pre-commit",
+    "git-cliff",
 ]
 
 [project.scripts]
 lyscripts = "lyscripts:main"
 
 [tool.setuptools.packages.find]
-include = ["lyscripts"]
+where = ["src"]
 
 [tool.setuptools_scm]
-write_to = "lyscripts/_version.py"
+write_to = "src/lyscripts/_version.py"
 local_scheme = "no-local-version"
-
-[tool.setuptools.dynamic]
-version = {attr = "lyscripts._version.version"}
 
 [tool.pytest.ini_options]
 testpaths = "."
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "B", "C", "R", "U", "D", "I", "S", "T", "A", "N"]
+select = ["E", "F", "W", "B", "C", "R", "U", "D", "I", "S", "T", "A", "N", "COM", "FURB", "NPY", "UP"]
 ignore = ["D409"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402"]
-"**/{tests,docs}/*" = [
+"{tests,docs}/*" = [
     "D103",
     "E402",
     "S101",
@@ -103,6 +105,14 @@ ignore = ["D409"]
     "S607",
 ]
 
+[tool.coverage.paths]
+source = [
+    "src/",
+    "**/site-packages/",
+]
+
+[tool.coverage.run]
+relative_files = true
 
 # git-cliff ~ default configuration file
 # https://git-cliff.org/docs/configuration

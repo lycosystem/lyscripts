@@ -13,15 +13,15 @@ The `URL for the schema`_ can for example be used in the settings of VS Code lik
 
     {
         "yaml.schemas": {
-            "https://raw.githubusercontent.com/rmnldwg/lyscripts/main/schemas/ly.json": "*.ly.yaml"
+            "https://raw.githubusercontent.com/lycosystem/lyscripts/main/schemas/ly.json": "*.ly.yaml"
         },
     }
 
 Which would enable auto-completion and validation for all files with the extension
 ``.ly.yaml`` in the workspace.
 
-.. _source code repository: https://github.com/rmnldwg/lyscripts
-.. _URL for the schema: https://raw.githubusercontent.com/rmnldwg/lyscripts/main/schemas/ly.json
+.. _source code repository: https://github.com/lycosystem/lyscripts
+.. _URL for the schema: https://raw.githubusercontent.com/lycosystem/lyscripts/main/schemas/ly.json
 """  # noqa: E501
 
 import json

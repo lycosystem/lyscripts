@@ -141,10 +141,10 @@ def ensure_initial_state(sampler: emcee.EnsembleSampler) -> np.ndarray:
         state = sampler.backend.get_last_sample()
         logger.info(
             f"Resuming from {sampler.backend.filename} with {sampler.iteration} "
-            "stored iterations."
+            "stored iterations.",
         )
     except AttributeError:
-        state = np.random.uniform(size=(sampler.nwalkers, sampler.ndim))
+        state = np.random.uniform(size=(sampler.nwalkers, sampler.ndim))  # noqa: NPY002
         logger.debug(f"No stored samples found. Starting from random state {state}.")
 
     return state
@@ -395,7 +395,7 @@ class SampleCLI(BaseCLI):
         ndim = MODEL.get_num_dims()
 
         # emcee does not support numpy's new random number generator yet.
-        np.random.seed(self.sampling.seed)
+        np.random.seed(self.sampling.seed)  # noqa: NPY002
 
         with get_pool(self.sampling.cores) as pool:
             sampler = init_sampler(settings=self, ndim=ndim, pool=pool)

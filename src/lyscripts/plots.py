@@ -184,7 +184,7 @@ class BetaPosterior(AbstractDistribution):
                 num_total = int(dataset.attrs["num_total"])
             except KeyError as key_err:
                 raise KeyError(
-                    "Dataset does not contain observed prevalence data"
+                    "Dataset does not contain observed prevalence data",
                 ) from key_err
 
         return cls(

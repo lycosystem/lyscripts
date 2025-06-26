@@ -23,7 +23,7 @@ def scenario_config() -> ScenarioConfig:
 @pytest.fixture
 def data() -> pd.DataFrame:
     """Load one of the lyDATA datasets."""
-    data = next(load_datasets())
+    data = next(load_datasets(year=2021, institution="usz"))
     return infer_and_combine_levels(data)
 
 

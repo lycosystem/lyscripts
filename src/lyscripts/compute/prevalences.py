@@ -78,13 +78,27 @@ def compute_prevalences(
         if isinstance(model, models.Unilateral | models.HPVUnilateral):
             involvement = involvement.get("ipsi")
 
-        prevalences.append(
-            model.marginalize(
+        prevalence = model.marginalize(
+            given_state_dist=obs_dist,
+            involvement=involvement,
+            **kwargs,
+        )
+
+        if isinstance(model, models.Midline):
+            # In this case, we need to renormalize the prevalence by the marginalized
+            # probability of all states with midline extension. We must do this, because
+            # we compute the analogous quantity for the data. In principle, we could
+            # also compute the prevalence of the diagnosis *and* midline extension, but
+            # we have decided to compute the diagnosis *given* midline extension.
+            # https://github.com/lycosystem/lyscripts/blob/ea49ec/lyscripts/compute/prevalences.py#L217-L225
+            midext_prob = model.marginalize(
+                involvement=None,
                 given_state_dist=obs_dist,
-                involvement=involvement,
                 **kwargs,
             )
-        )
+            prevalence /= midext_prob
+
+        prevalences.append(prevalence)
 
     return np.stack(prevalences)
 
@@ -132,6 +146,12 @@ def observe_prevalence(
         has_midext = NoneQ()
     else:
         has_midext = C("midext") == scenario_config.midext
+
+    # Note that below we compute the prevalence of the diagnosis *given* midline
+    # extension. This means, that when computing the prevalence of the diagnosis in
+    # the model, we need to renormalize by diving by the probability of midline
+    # extension. For an older - but pretty surely correct - implementation see
+    # https://github.com/lycosystem/lyscripts/blob/ea49ec/lyscripts/compute/prevalences.py#L217-L225
     return data.ly.portion(
         query=generate_query_from_diagnosis(scenario_config.diagnosis),
         given=has_t_stage & has_midext,

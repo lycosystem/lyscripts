@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0rc2] - 2025-06-26
+
+### Bug Fixes
+
+- Divide by midext prevalence. Fixes [#72].\
+  This fixes a bug we reintroduced where we didn't compute observed and
+  model prevalence in an analogous and comparable way.
+
+### Documentation
+
+- Fix build badge in README.
+- Fix outdated links to rmnldwg.
+
+### Miscellaneous Tasks
+
+- Update pre-commit & ruff rules.
+
+### Testing
+
+- Fix the dataset used for testing prevalences.
+
+### Build
+
+- Switch to `src` layout. Fixes [#74].
+
+### Ci
+
+- Use tests action with coverage.
+
 ## [1.0.0rc1] - 2025-05-27
 
 ### Bug Fixes
@@ -819,63 +848,66 @@ returns `None` instead. Fixes [#11]
 ## [0.5.3] - 2022-08-22
 
 <!-- markdownlint-disable-file MD024 -->
-[1.0.0rc1]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a7...1.0.0rc1
-[1.0.0.a7]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a6...1.0.0.a7
-[1.0.0.a6]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a5...1.0.0.a6
-[1.0.0.a5]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a4...1.0.0.a5
-[1.0.0.a4]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a3...1.0.0.a4
-[1.0.0.a3]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a2...1.0.0.a3
-[1.0.0.a2]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a1...1.0.0.a2
-[1.0.0.a1]: https://github.com/rmnldwg/lyscripts/compare/1.0.0.a0...1.0.0.a1
-[1.0.0.a0]: https://github.com/rmnldwg/lyscripts/compare/0.7.3...1.0.0.a0
-[0.7.3]: https://github.com/rmnldwg/lyscripts/compare/0.7.2...0.7.3
-[0.7.2]: https://github.com/rmnldwg/lyscripts/compare/0.7.1...0.7.2
-[0.7.1]: https://github.com/rmnldwg/lyscripts/compare/0.7.0...0.7.1
-[0.7.0]: https://github.com/rmnldwg/lyscripts/compare/0.6.9...0.7.0
-[0.6.9]: https://github.com/rmnldwg/lyscripts/compare/0.6.8...0.6.9
-[0.6.8]: https://github.com/rmnldwg/lyscripts/compare/0.6.7...0.6.8
-[0.6.7]: https://github.com/rmnldwg/lyscripts/compare/0.6.6...0.6.7
-[0.6.6]: https://github.com/rmnldwg/lyscripts/compare/0.6.5...0.6.6
-[0.6.5]: https://github.com/rmnldwg/lyscripts/compare/0.6.4...0.6.5
-[0.6.4]: https://github.com/rmnldwg/lyscripts/compare/0.6.3...0.6.4
-[0.6.3]: https://github.com/rmnldwg/lyscripts/compare/0.6.2...0.6.3
-[0.6.2]: https://github.com/rmnldwg/lyscripts/compare/0.6.1...0.6.2
-[0.6.1]: https://github.com/rmnldwg/lyscripts/compare/0.6.0...0.6.1
-[0.6.0]: https://github.com/rmnldwg/lyscripts/compare/0.5.11...0.6.0
-[0.5.11]: https://github.com/rmnldwg/lyscripts/compare/0.5.10...0.5.11
-[0.5.10]: https://github.com/rmnldwg/lyscripts/compare/0.5.9...0.5.10
-[0.5.9]: https://github.com/rmnldwg/lyscripts/compare/0.5.8...0.5.9
-[0.5.8]: https://github.com/rmnldwg/lyscripts/compare/0.5.7...0.5.8
-[0.5.7]: https://github.com/rmnldwg/lyscripts/compare/0.5.6...0.5.7
-[0.5.6]: https://github.com/rmnldwg/lyscripts/compare/0.5.5...0.5.6
-[0.5.5]: https://github.com/rmnldwg/lyscripts/compare/0.5.4...0.5.5
-[0.5.4]: https://github.com/rmnldwg/lyscripts/compare/0.5.3...0.5.4
-[0.5.3]: https://github.com/rmnldwg/lyscripts/compare/0.5.2...0.5.3
+[1.0.0rc2]: https://github.com/lycosystem/lyscripts/compare/1.0.0rc1...1.0.0rc2
+[1.0.0rc1]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a7...1.0.0rc1
+[1.0.0.a7]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a6...1.0.0.a7
+[1.0.0.a6]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a5...1.0.0.a6
+[1.0.0.a5]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a4...1.0.0.a5
+[1.0.0.a4]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a3...1.0.0.a4
+[1.0.0.a3]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a2...1.0.0.a3
+[1.0.0.a2]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a1...1.0.0.a2
+[1.0.0.a1]: https://github.com/lycosystem/lyscripts/compare/1.0.0.a0...1.0.0.a1
+[1.0.0.a0]: https://github.com/lycosystem/lyscripts/compare/0.7.3...1.0.0.a0
+[0.7.3]: https://github.com/lycosystem/lyscripts/compare/0.7.2...0.7.3
+[0.7.2]: https://github.com/lycosystem/lyscripts/compare/0.7.1...0.7.2
+[0.7.1]: https://github.com/lycosystem/lyscripts/compare/0.7.0...0.7.1
+[0.7.0]: https://github.com/lycosystem/lyscripts/compare/0.6.9...0.7.0
+[0.6.9]: https://github.com/lycosystem/lyscripts/compare/0.6.8...0.6.9
+[0.6.8]: https://github.com/lycosystem/lyscripts/compare/0.6.7...0.6.8
+[0.6.7]: https://github.com/lycosystem/lyscripts/compare/0.6.6...0.6.7
+[0.6.6]: https://github.com/lycosystem/lyscripts/compare/0.6.5...0.6.6
+[0.6.5]: https://github.com/lycosystem/lyscripts/compare/0.6.4...0.6.5
+[0.6.4]: https://github.com/lycosystem/lyscripts/compare/0.6.3...0.6.4
+[0.6.3]: https://github.com/lycosystem/lyscripts/compare/0.6.2...0.6.3
+[0.6.2]: https://github.com/lycosystem/lyscripts/compare/0.6.1...0.6.2
+[0.6.1]: https://github.com/lycosystem/lyscripts/compare/0.6.0...0.6.1
+[0.6.0]: https://github.com/lycosystem/lyscripts/compare/0.5.11...0.6.0
+[0.5.11]: https://github.com/lycosystem/lyscripts/compare/0.5.10...0.5.11
+[0.5.10]: https://github.com/lycosystem/lyscripts/compare/0.5.9...0.5.10
+[0.5.9]: https://github.com/lycosystem/lyscripts/compare/0.5.8...0.5.9
+[0.5.8]: https://github.com/lycosystem/lyscripts/compare/0.5.7...0.5.8
+[0.5.7]: https://github.com/lycosystem/lyscripts/compare/0.5.6...0.5.7
+[0.5.6]: https://github.com/lycosystem/lyscripts/compare/0.5.5...0.5.6
+[0.5.5]: https://github.com/lycosystem/lyscripts/compare/0.5.4...0.5.5
+[0.5.4]: https://github.com/lycosystem/lyscripts/compare/0.5.3...0.5.4
+[0.5.3]: https://github.com/lycosystem/lyscripts/compare/0.5.2...0.5.3
 
-[#2]: https://github.com/rmnldwg/lyscripts/issues/2
-[#5]: https://github.com/rmnldwg/lyscripts/issues/5
-[#8]: https://github.com/rmnldwg/lyscripts/issues/8
-[#11]: https://github.com/rmnldwg/lyscripts/issues/11
-[#13]: https://github.com/rmnldwg/lyscripts/issues/13
-[#15]: https://github.com/rmnldwg/lyscripts/issues/15
-[#16]: https://github.com/rmnldwg/lyscripts/issues/16
-[#17]: https://github.com/rmnldwg/lyscripts/issues/17
-[#20]: https://github.com/rmnldwg/lyscripts/issues/20
-[#21]: https://github.com/rmnldwg/lyscripts/issues/21
-[#23]: https://github.com/rmnldwg/lyscripts/issues/23
-[#25]: https://github.com/rmnldwg/lyscripts/issues/25
-[#30]: https://github.com/rmnldwg/lyscripts/issues/30
-[#31]: https://github.com/rmnldwg/lyscripts/issues/31
-[#33]: https://github.com/rmnldwg/lyscripts/issues/33
-[#40]: https://github.com/rmnldwg/lyscripts/issues/40
-[#41]: https://github.com/rmnldwg/lyscripts/issues/41
-[#44]: https://github.com/rmnldwg/lyscripts/issues/44
-[#45]: https://github.com/rmnldwg/lyscripts/issues/45
-[#51]: https://github.com/rmnldwg/lyscripts/issues/51
-[#53]: https://github.com/rmnldwg/lyscripts/issues/53
-[#54]: https://github.com/rmnldwg/lyscripts/issues/54
-[#57]: https://github.com/rmnldwg/lyscripts/issues/57
-[#70]: https://github.com/rmnldwg/lyscripts/issues/70
+[#2]: https://github.com/lycosystem/lyscripts/issues/2
+[#5]: https://github.com/lycosystem/lyscripts/issues/5
+[#8]: https://github.com/lycosystem/lyscripts/issues/8
+[#11]: https://github.com/lycosystem/lyscripts/issues/11
+[#13]: https://github.com/lycosystem/lyscripts/issues/13
+[#15]: https://github.com/lycosystem/lyscripts/issues/15
+[#16]: https://github.com/lycosystem/lyscripts/issues/16
+[#17]: https://github.com/lycosystem/lyscripts/issues/17
+[#20]: https://github.com/lycosystem/lyscripts/issues/20
+[#21]: https://github.com/lycosystem/lyscripts/issues/21
+[#23]: https://github.com/lycosystem/lyscripts/issues/23
+[#25]: https://github.com/lycosystem/lyscripts/issues/25
+[#30]: https://github.com/lycosystem/lyscripts/issues/30
+[#31]: https://github.com/lycosystem/lyscripts/issues/31
+[#33]: https://github.com/lycosystem/lyscripts/issues/33
+[#40]: https://github.com/lycosystem/lyscripts/issues/40
+[#41]: https://github.com/lycosystem/lyscripts/issues/41
+[#44]: https://github.com/lycosystem/lyscripts/issues/44
+[#45]: https://github.com/lycosystem/lyscripts/issues/45
+[#51]: https://github.com/lycosystem/lyscripts/issues/51
+[#53]: https://github.com/lycosystem/lyscripts/issues/53
+[#54]: https://github.com/lycosystem/lyscripts/issues/54
+[#57]: https://github.com/lycosystem/lyscripts/issues/57
+[#70]: https://github.com/lycosystem/lyscripts/issues/70
+[#72]: https://github.com/lycosystem/lyscripts/issues/72
+[#74]: https://github.com/lycosystem/lyscripts/issues/74
 
 [`emcee`]: https://emcee.readthedocs.io/en/stable/
 [`rich`]: https://rich.readthedocs.io/en/latest/
