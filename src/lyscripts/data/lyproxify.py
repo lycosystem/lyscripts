@@ -60,7 +60,7 @@ class LyproxifyCLI(BaseCLI):
         description=(
             "Location of Python file containing a `COLUMN_MAP` dictionary. It may also "
             "contain an `EXCLUDE` list of tuples `(column, check)` to exclude patients."
-        )
+        ),
     )
     drop_rows: list[int] = Field(
         default=[],
@@ -165,7 +165,7 @@ def get_instruction_depth(nested_column_map: dict[tuple, dict[str, Any]]) -> int
             return 1 + get_instruction_depth(value)
 
         raise ValueError(
-            "Leaf of column map must be a dictionary with 'func' or 'default' key."
+            "Leaf of column map must be a dictionary with 'func' or 'default' key.",
         )
 
     raise ValueError("Empty column map.")
@@ -268,12 +268,12 @@ def transform_to_lyprox(
                     ]
                 except Exception as exc:
                     raise ParsingError(
-                        f"Exception encountered while parsing column {multi_idx_col}"
+                        f"Exception encountered while parsing column {multi_idx_col}",
                     ) from exc
             else:
                 raise ParsingError(
                     f"Column {multi_idx_col} has neither a `default` value nor `func` "
-                    "describing how to fill this column."
+                    "describing how to fill this column.",
                 )
 
     logger.info("Transformed raw data to LyProX format.")

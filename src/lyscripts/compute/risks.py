@@ -1,9 +1,8 @@
-"""Compute posterior state distributions.
+"""Predict risks of involvements for scenarios using drawn MCMC samples.
 
-The posteriors are computed from drawn samples for a list of defined scenarios. If
-priors have already been computed from the samples and the ``--cache_dir`` argument
-is the same as during that computation, the priors will automatically be loaded from
-the cache.
+As the priors and posteriors, this computation, too, uses caching and may skip the
+computation of these two initial steps if the cache directory is the same as during
+their computation.
 """
 
 from typing import Literal
@@ -15,6 +14,7 @@ from pydantic import Field
 from rich import progress
 
 from lyscripts.cli import assemble_main
+from lyscripts.compute.posteriors import compute_posteriors
 from lyscripts.compute.priors import compute_priors
 from lyscripts.compute.utils import BaseComputeCLI, HDF5FileStorage, get_cached
 from lyscripts.configs import (
@@ -29,54 +29,44 @@ from lyscripts.configs import (
 from lyscripts.utils import console
 
 
-def compute_posteriors(
+def compute_risks(
     model_config: ModelConfig,
     graph_config: GraphConfig,
     dist_configs: dict[str, DistributionConfig],
     modality_configs: dict[str, ModalityConfig],
-    priors: np.ndarray,
-    diagnosis: dict[Literal["ipsi", "contra"], dict],
-    midext: bool | None = None,
-    mode: Literal["HMM", "BN"] = "HMM",
-    progress_desc: str = "Computing posteriors from priors",
+    posteriors: np.ndarray,
+    involvement: dict[Literal["ipsi", "contra"], dict],
+    progress_desc: str = "Computing risks from posteriors",
 ) -> np.ndarray:
-    """Compute posterior state distributions from ``priors``.
+    """Compute the risk of ``involvement`` from each of the ``posteriors``.
 
-    This calls the ``model`` method :py:meth:`~lymph.types.Model.posterior_state_dist`
-    for each of the pre-computed ``priors``, given the specified ``diagnosis`` pattern.
-
-    For the :py:class:`~lymph.models.Midline` model, the ``midext`` argument can be
-    used to specify whether the midline extension is present or not.
+    Essentially, this only calls the model's :py:meth:`lymph.models.Model.marginalize`
+    method, as nothing more is necessary than to marginalize the full posterior state
+    distribution over the states that correspond to the involvement of interest.
     """
     model = construct_model(model_config, graph_config)
     model = add_distributions(model, dist_configs)
     model = add_modalities(model, modality_configs)
-    posteriors = []
-    kwargs = {"midext": midext} if isinstance(model, models.Midline) else {}
+    risks = []
 
     if isinstance(model, models.Unilateral | models.HPVUnilateral):
-        diagnosis = diagnosis.get("ipsi")
+        involvement = involvement.get("ipsi")
 
-    for prior in progress.track(
-        sequence=priors,
+    for posterior in progress.track(
+        sequence=posteriors,
         description=progress_desc,
-        total=len(priors),
+        total=len(posteriors),
         console=console,
     ):
-        posteriors.append(
-            model.posterior_state_dist(
-                given_state_dist=prior,
-                given_diagnosis=diagnosis,
-                mode=mode,
-                **kwargs,
-            )
+        risks.append(
+            model.marginalize(involvement=involvement, given_state_dist=posterior),
         )
 
-    return np.stack(posteriors)
+    return np.stack(risks)
 
 
-class PosteriorsCLI(BaseComputeCLI):
-    """Compute posterior state distributions for different diagnosis scenarios."""
+class RisksCLI(BaseComputeCLI):
+    """Predict the risk of involvement scenarios from model samples given diagnoses."""
 
     modalities: dict[str, ModalityConfig] = Field(
         default={},
@@ -84,26 +74,20 @@ class PosteriorsCLI(BaseComputeCLI):
             "Maps names of diagnostic modalities to their specificity/sensitivity."
         ),
     )
-    posteriors: HDF5FileStorage = Field(
-        description="Storage for the computed posteriors."
-    )
+    risks: HDF5FileStorage = Field(description="Storage for the computed risks.")
 
     def cli_cmd(self) -> None:
-        """Start the ``posteriors`` subcommand.
-
-        This will compute the posterior state distributions, given a personalized
-        diagnosis pattern, for each of the scenarios provided to the command.
-        """
+        """Start the ``risks`` subcommand."""
         logger.debug(self.model_dump_json(indent=2))
-
         global_attrs = self.model_dump(
             include={"model", "graph", "distributions", "modalities"},
         )
-        self.posteriors.set_attrs(attrs=global_attrs, dataset="/")
+        self.risks.set_attrs(attrs=global_attrs, dataset="/")
 
         samples = self.sampling.load()
         cached_compute_priors = get_cached(compute_priors, self.cache_dir)
         cached_compute_posteriors = get_cached(compute_posteriors, self.cache_dir)
+        cached_compute_risks = get_cached(compute_risks, self.cache_dir)
         num_scens = len(self.scenarios)
 
         for i, scenario in enumerate(self.scenarios):
@@ -122,7 +106,7 @@ class PosteriorsCLI(BaseComputeCLI):
             _fields = {"diagnosis", "midext", "mode"}
             posterior_kwargs = scenario.model_dump(include=_fields)
 
-            posteriors = cached_compute_posteriors(
+            _posteriors = cached_compute_posteriors(
                 model_config=self.model,
                 graph_config=self.graph,
                 dist_configs=self.distributions,
@@ -132,11 +116,25 @@ class PosteriorsCLI(BaseComputeCLI):
                 **posterior_kwargs,
             )
 
-            self.posteriors.save(values=posteriors, dataset=f"{i:03d}")
-            self.posteriors.set_attrs(attrs=prior_kwargs, dataset=f"{i:03d}")
-            self.posteriors.set_attrs(attrs=posterior_kwargs, dataset=f"{i:03d}")
+            _fields = {"involvement"}
+            risk_kwargs = scenario.model_dump(include=_fields)
+
+            risks = cached_compute_risks(
+                model_config=self.model,
+                graph_config=self.graph,
+                dist_configs=self.distributions,
+                modality_configs=self.modalities,
+                posteriors=_posteriors,
+                progress_desc=f"Computing risks for scenario {i + 1}/{num_scens}",
+                **risk_kwargs,
+            )
+
+            self.risks.save(values=risks, dataset=f"{i:03d}")
+            self.risks.set_attrs(attrs=prior_kwargs, dataset=f"{i:03d}")
+            self.risks.set_attrs(attrs=posterior_kwargs, dataset=f"{i:03d}")
+            self.risks.set_attrs(attrs=risk_kwargs, dataset=f"{i:03d}")
 
 
 if __name__ == "__main__":
-    main = assemble_main(settings_cls=PosteriorsCLI, prog_name="compute posteriors")
+    main = assemble_main(settings_cls=RisksCLI, prog_name="compute risks")
     main()

@@ -73,7 +73,7 @@ class DataConfig(BaseModel):
         description=(
             "Either a path to a CSV file or a config that specifies how and where "
             "to fetch the data from."
-        )
+        ),
     )
     side: Literal["ipsi", "contra"] | None = Field(
         default=None,
@@ -129,14 +129,16 @@ class DistributionConfig(BaseModel):
     """Configuration defining a distribution over diagnose times."""
 
     kind: Literal["frozen", "parametric"] = Field(
-        default="frozen", description="Parametric distributions may be updated."
+        default="frozen",
+        description="Parametric distributions may be updated.",
     )
     func: FuncNameType = Field(
         default="binomial",
         description="Name of predefined function to use as distribution.",
     )
     params: dict[str, int | float] = Field(
-        default={}, description="Parameters to pass to the predefined function."
+        default={},
+        description="Parameters to pass to the predefined function.",
     )
 
 
@@ -228,14 +230,16 @@ class ModelConfig(BaseModel):
         description="Path to a Python file that defines a model.",
     )
     class_name: Literal["Unilateral", "Bilateral", "Midline"] = Field(
-        default="Unilateral", description="Name of the model class to use."
+        default="Unilateral",
+        description="Name of the model class to use.",
     )
     constructor: Literal["binary", "trinary"] = Field(
         default="binary",
         description="Trinary models differentiate btw. micro- and macroscopic disease.",
     )
     max_time: int = Field(
-        default=10, description="Max. number of time-steps to evolve the model over."
+        default=10,
+        description="Max. number of time-steps to evolve the model over.",
     )
     named_params: Sequence[str] = Field(
         default=None,
@@ -387,7 +391,7 @@ class SamplingConfig(BaseModel):
     """Settings to configure the MCMC sampling."""
 
     storage_file: Path = Field(
-        description="Path to HDF5 file store results or load last state."
+        description="Path to HDF5 file store results or load last state.",
     )
     history_file: Path | None = Field(
         default=None,
@@ -433,7 +437,8 @@ class SamplingConfig(BaseModel):
         description=("Number of steps to take in the MCMC sampling."),
     )
     thin_by: int = Field(
-        default=10, description="How many samples to draw before for saving one."
+        default=10,
+        description="How many samples to draw before for saving one.",
     )
     inverse_temp: float = Field(
         default=1.0,
@@ -674,14 +679,15 @@ class DynamicYamlConfigSettingsSource(YamlConfigSettingsSource):
             if data.get("version") != 1:
                 raise ValueError(
                     f"Config file {file_path} does not have a 'version: 1' key. "
-                    "For compatibility reasons, all config files must have this key."
+                    "For compatibility reasons, all config files must have this key.",
                 )
             return data
 
     def __call__(self) -> dict[str, Any]:
         """Reload the config files from the paths in the current state."""
         yaml_file_to_reload = self.current_state.get(
-            self.yaml_file_path_field, self.yaml_file_path
+            self.yaml_file_path_field,
+            self.yaml_file_path,
         )
         logger.debug(f"Reloading YAML files from {yaml_file_to_reload} (if it exists).")
         self.__init__(

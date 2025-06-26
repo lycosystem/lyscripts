@@ -30,10 +30,10 @@ class FilterCLI(BaseCLI):
             "The column to filter by. May be a tuple of three strings, since data "
             "has a three-level header. If it is only one string, the lydata package "
             "tries to map that to a three-level header."
-        )
+        ),
     )
     operator: Literal["==", "!=", ">", "<", ">=", "<=", "in", "contains"] = Field(
-        description="The operator to use for comparison."
+        description="The operator to use for comparison.",
     )
     value: float | int | str = Field(description="The value to compare against.")
     output_file: Path = Field(description="The path to save the filtered dataset to.")
@@ -48,7 +48,7 @@ class FilterCLI(BaseCLI):
             else:
                 raise ValueError(
                     "The column attribute must be an iterable of three strings or a "
-                    f"single string, but it is {self.column}."
+                    f"single string, but it is {self.column}.",
                 )
 
         try:

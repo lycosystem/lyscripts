@@ -4,7 +4,10 @@ import argparse
 
 from lyscripts import exit_cli
 from lyscripts.cli import RichDefaultHelpFormatter
-from lyscripts.data import enhance, filter, generate, join, split
+from lyscripts.data import enhance, generate, join, split
+
+# Avoid conflict with built-in `filter` function
+from lyscripts.data import filter as filter_
 
 
 def main(args: argparse.Namespace):
@@ -23,7 +26,7 @@ def main(args: argparse.Namespace):
     generate._add_parser(subparsers, help_formatter=parser.formatter_class)
     join._add_parser(subparsers, help_formatter=parser.formatter_class)
     split._add_parser(subparsers, help_formatter=parser.formatter_class)
-    filter._add_parser(subparsers, help_formatter=parser.formatter_class)
+    filter_._add_parser(subparsers, help_formatter=parser.formatter_class)
 
     args = parser.parse_args()
     args.run_main(args, parser)
