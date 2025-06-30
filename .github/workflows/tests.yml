@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  tests:
     name: Run tests & report coverage
     runs-on: ubuntu-latest
     permissions:
@@ -30,7 +30,7 @@ jobs:
       # Below, we first run pytest in the `tests/` folder. Because we use a `src`
       # layout, this will fail if the package is not installed correctly.
       - name: Test package is installable
-        run: pytest --cov=lydata --cov-config=pyproject.toml tests
+        run: pytest --cov=lyscripts --cov-config=pyproject.toml tests
         env:
           COVERAGE_FILE: .coverage.is_installable
 
@@ -39,7 +39,7 @@ jobs:
       # installable from the step above.
       - name: Run doctests
         if: success() || failure()   # run these even if previous step fails
-        run: pytest --cov=lydata --cov-config=pyproject.toml --doctest-modules src
+        run: pytest --cov=lyscripts --cov-config=pyproject.toml --doctest-modules src
         env:
           COVERAGE_FILE: .coverage.doctests
           GITHUB_TOKEN: ${{ secrets.LYCOSYSTEM_READALL }}

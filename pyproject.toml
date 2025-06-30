@@ -68,8 +68,9 @@ docs = [
     "myst_parser",
     "autodoc_pydantic",
 ]
-test = [
+tests = [
     "pytest",
+    "pytest-cov",
     "pytest-mpl",
 ]
 dev = [
@@ -104,6 +105,14 @@ ignore = ["D409"]
     "S607",
 ]
 
+[tool.coverage.paths]
+source = [
+    "src/",
+    "**/site-packages/",
+]
+
+[tool.coverage.run]
+relative_files = true
 
 # git-cliff ~ default configuration file
 # https://git-cliff.org/docs/configuration
